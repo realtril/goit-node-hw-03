@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const { Router } = require("express");
-const { validate } = require("../helpers/validate");
+const { validate } = require("../helpers/helpers");
+const { tcWrapper } = require("../helpers/helpers");
 const contactsController = require("../controllers/contactsController");
 const {
   Types: { ObjectId },
@@ -28,17 +29,17 @@ const updateContactScheme = Joi.object({
 router.post(
   "/",
   validate(createContactSchema),
-  contactsController.addNewContact
+  tcWrapper(contactsController.addNewContact)
 );
 
-router.get("/", contactsController.getContacts);
-router.get("/:contactId", contactsController.getContact);
+router.get("/", tcWrapper(contactsController.getContacts));
+router.get("/:contactId", tcWrapper(contactsController.getContact));
 
-router.delete("/:contactId", contactsController.deleteContact);
+router.delete("/:contactId", tcWrapper(contactsController.deleteContact));
 
 router.patch(
   "/:contactId",
   validate(updateContactScheme),
-  contactsController.updateContact
+  tcWrapper(contactsController.updateContact)
 );
 exports.contactRouter = router;

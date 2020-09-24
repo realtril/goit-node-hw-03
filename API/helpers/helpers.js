@@ -7,3 +7,13 @@ exports.validate = function validate(scheme, reqPart = "body") {
     next();
   };
 };
+
+exports.tcWrapper = function tcWrapper(f) {
+  return async (req, res, next) => {
+    try {
+      await f(req, res);
+    } catch (error) {
+      next(error);
+    }
+  };
+};
